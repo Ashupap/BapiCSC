@@ -2,118 +2,130 @@ import { motion } from "framer-motion";
 import { ShieldCheck, Clock, Award, Users, Zap, Lock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+const stats = [
+  { value: "10+", labelEn: "Years Experience", labelOd: "ବର୍ଷ ଅଭିଜ୍ଞତା", icon: Award, color: "#F06421" },
+  { value: "5000+", labelEn: "Customers Served", labelOd: "ଗ୍ରାହୀ ସେବା", icon: Users, color: "#003366" },
+  { value: "100+", labelEn: "Services Available", labelOd: "ସେବା ଉପଲବ୍ଧ", icon: Zap, color: "#F06421" },
+  { value: "Same Day", labelEn: "Processing", labelOd: "ପ୍ରକ୍ରିୟାକରଣ", icon: Clock, color: "#003366" },
+];
+
 const highlights = [
-  {
-    icon: Award,
-    color: "#F06421",
-    en: "10+ Years Experience",
-    od: "10+ ବର୍ଷ ଅଭିଜ୍ଞତା",
-  },
-  {
-    icon: Users,
-    color: "#003366",
-    en: "5000+ Customers Served",
-    od: "5000+ ଗ୍ରାହୀ ସେବା",
-  },
-  {
-    icon: Clock,
-    color: "#F06421",
-    en: "Same-Day Processing",
-    od: "ସେଦିନ ପ୍ରକ୍ରିୟାକରଣ",
-  },
-  {
-    icon: ShieldCheck,
-    color: "#003366",
-    en: "100% Govt. Authorized",
-    od: "100% ସରକାର ଅନୁମୋଦିତ",
-  },
-  {
-    icon: Zap,
-    color: "#F06421",
-    en: "IT Infrastructure Expert",
-    od: "IT ଭିତ୍ତିଭୂମି ବିଶେଷଜ୍ଞ",
-  },
-  {
-    icon: Lock,
-    color: "#003366",
-    en: "Data Security First",
-    od: "ଡ଼ାଟା ସୁରକ୍ଷା ପ୍ରଥମ",
-  },
+  { icon: ShieldCheck, color: "#003366", en: "100% Govt. Authorized", od: "100% ସରକାର ଅନୁମୋଦିତ" },
+  { icon: Lock, color: "#F06421", en: "Data Security First", od: "ଡ଼ାଟା ସୁରକ୍ଷା ପ୍ରଥମ" },
+  { icon: Award, color: "#003366", en: "10+ Years Expertise", od: "10+ ବର୍ଷ ଅଭିଜ୍ଞତା" },
+  { icon: Users, color: "#F06421", en: "5000+ Happy Clients", od: "5000+ ସନ୍ତୁଷ୍ଟ ଗ୍ରାହୀ" },
+  { icon: Zap, color: "#003366", en: "Same-Day Processing", od: "ସେଦିନ ପ୍ରକ୍ରିୟାକରଣ" },
+  { icon: ShieldCheck, color: "#F06421", en: "IT Infrastructure Expert", od: "IT ଭିତ୍ତିଭୂମି ବିଶେଷଜ୍ଞ" },
 ];
 
 export default function AboutSection() {
   const { t } = useLanguage();
 
   return (
-    <section className="py-14 bg-white" id="about">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          {/* Left: Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-xs font-bold tracking-widest text-[#F06421] uppercase">
-              {t("About The Expert", "ବিশেষজ্ঞ সম্পর্কে")}
-            </span>
-            <h2 className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#003366] leading-tight">
-              {t(
-                "Your Digital Custodian in Balasore",
-                "ବ֍ালেশ্বরের আপনার ডিজিটাল সংরক্ষক"
-              )}
-            </h2>
-            <p className="mt-4 text-gray-600 leading-relaxed">
-              {t(
-                "With over 10 years in IT Infrastructure and digital services, I've helped thousands of families in Balasore navigate government procedures without stress. As a Verified Bank of Baroda BC Point and Authorized CSC-VLE, every service I provide is 100% legitimate, fast, and secure.",
-                "IT ভিত্তিভূমি ও ডিজিটাল সেবায় ১০+ বছরের অভিজ্ঞতা নিয়ে, আমি বালেশ্বরে হাজারো পরিবারকে সরকারি প্রক্রিয়া ঝামেলামুক্তভাবে সম্পন্ন করতে সাহায্য করেছি। একজন স্বীকৃত BoB BC পয়েন্ট ও অনুমোদিত CSC-VLE হিসেবে, আমার প্রতিটি সেবা ১০০% বৈধ, দ্রুত ও নিরাপদ।"
-              )}
-            </p>
-            <div className="mt-4 p-4 bg-gradient-to-r from-[#003366]/5 to-[#F06421]/5 rounded-xl border border-[#003366]/10">
-              <p className="text-[#003366] font-semibold text-sm italic">
-                "{t(
-                  "Your data stays private. Your time stays yours. I take the queue so you don't have to.",
-                  "আপনার তথ্য গোপন থাকে। আপনার সময় আপনার থাকে। আমি লাইনে দাঁড়াই যাতে আপনাকে দাঁড়াতে না হয়।"
-                )}"
-              </p>
-              <p className="mt-2 text-[#F06421] text-xs font-bold">
-                — {t("Sanjay Kumar, Founder & VLE", "সঞ্জয় কুমার, প্রতিষ্ঠাতা ও VLE")}
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Right: Highlights grid */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-2 sm:grid-cols-3 gap-4"
-          >
-            {highlights.map((h, i) => (
+    <>
+      {/* Stats strip */}
+      <section className="bg-[#003366] py-0 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/10">
+            {stats.map((s, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-[#F8FAFC] rounded-xl p-4 text-center border border-gray-100 hover:shadow-md transition-shadow"
+                transition={{ delay: i * 0.08 }}
+                className="flex flex-col items-center justify-center py-7 px-4 text-center"
               >
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"
-                  style={{ backgroundColor: `${h.color}15` }}
+                  className="text-3xl sm:text-4xl font-extrabold text-white mb-1 leading-none"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  <h.icon size={20} style={{ color: h.color }} />
+                  {s.value}
                 </div>
-                <p className="text-xs font-semibold text-[#003366] leading-tight">
-                  {t(h.en, h.od)}
-                </p>
+                <div className="text-xs text-white/55 font-medium tracking-wide uppercase">
+                  {t(s.labelEn, s.labelOd)}
+                </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* About content */}
+      <section className="py-20 bg-[#F8FAFC]" id="about">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            {/* Left: Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="inline-block text-xs font-bold tracking-[0.2em] text-[#F06421] uppercase mb-3">
+                {t("About The Expert", "ବିଶେଷଜ୍ଞ ବିଷୟରେ")}
+              </span>
+              <h2
+                className="text-3xl sm:text-4xl font-extrabold text-[#003366] leading-tight mb-5"
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
+                {t("Your Digital Custodian\nin Balasore", "ବାଲେଶ୍ୱରରେ ଆପଣଙ୍କ\nଡିଜିଟାଲ ସଂରକ୍ଷକ")}
+              </h2>
+              <p className="text-gray-600 leading-relaxed text-base mb-6">
+                {t(
+                  "With over 10 years in IT Infrastructure and digital services, I've helped thousands of families in Balasore navigate government procedures without stress. As a Verified Bank of Baroda BC Point and Authorized CSC-VLE, every service I provide is 100% legitimate, fast, and secure.",
+                  "IT ଭିତ୍ତିଭୂମି ଓ ଡିଜିଟାଲ ସେବାରେ 10+ ବର୍ଷ ଅଭିଜ୍ଞତା ସହ, ଆମେ ବାଲେଶ୍ୱରର ହଜାରେ ପରିବାରଙ୍କୁ ଚିନ୍ତାମୁକ୍ତ ଭାବରେ ସରକାରୀ ପ୍ରକ୍ରିୟା ସଂପୂର୍ଣ୍ଣ କରିବାରେ ସାହାଯ୍ୟ କରିଛୁ।"
+                )}
+              </p>
+
+              {/* Quote card */}
+              <div className="relative pl-5 border-l-4 border-[#F06421]">
+                <p className="text-[#003366] font-semibold text-base italic leading-relaxed">
+                  "{t(
+                    "Your data stays private. Your time stays yours. I take the queue so you don't have to.",
+                    "ଆପଣଙ୍କ ଡ଼ାଟା ଗୋପନ ରହେ। ଆପଣଙ୍କ ସମୟ ଆପଣଙ୍କ ନିଜ। ମୁଁ ଲାଇନ ଦିଏ ଯାହାଫଳରେ ଆପଣଙ୍କୁ ଦେବାକୁ ପଡ଼ୁ ନ ଥାଏ।"
+                  )}"
+                </p>
+                <p className="mt-3 text-[#F06421] text-sm font-bold">
+                  — {t("Sanjay Kumar, Founder & VLE", "ସଞ୍ଜୟ କୁମାର, ପ୍ରତିଷ୍ଠାତା ଓ VLE")}
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Right: Credential grid */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+            >
+              {highlights.map((h, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className="bg-white rounded-2xl p-5 text-center border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+                >
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-3"
+                    style={{ backgroundColor: `${h.color}12` }}
+                  >
+                    <h.icon size={22} style={{ color: h.color }} />
+                  </div>
+                  <p className="text-xs font-semibold text-[#003366] leading-snug">
+                    {t(h.en, h.od)}
+                  </p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
