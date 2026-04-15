@@ -1,12 +1,14 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Fuse from "fuse.js";
 import {
   Plus, Minus, ShoppingCart, X, CheckCircle2, FileText,
-  MessageCircle, Upload, Check, ChevronDown
+  MessageCircle, Upload, ChevronDown, ChevronUp
 } from "lucide-react";
 import { services, categories, Service } from "@/data/services";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+const PAGE_SIZE = 9;
 
 function generateTicketId() {
   return "CSC" + Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -33,6 +35,7 @@ interface ServiceEngineProps {
 export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
   const { t, lang } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [basket, setBasket] = useState<BasketItem[]>([]);
   const [basketOpen, setBasketOpen] = useState(false);
   const [uploadStates, setUploadStates] = useState<UploadState>({});
@@ -57,6 +60,13 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
     }
     return base;
   }, [searchQuery, selectedCategory, fuse]);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [searchQuery, selectedCategory]);
+
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   function addToBasket(svc: Service) {
     if (!basket.find((b) => b.service.id === svc.id)) {
@@ -179,7 +189,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                 <p>{t("No services found. Try a different search.", "କୋଣସି ସେବା ମିଳିଲା ନାହିଁ। ଅଲଗା ଖୋଜ ଚେଷ୍ଟା କରନ୍ତୁ।")}</p>
               </motion.div>
             ) : (
-              filtered.map((svc, i) => {
+              visible.map((svc, i) => {
                 const inBasket = basket.some((b) => b.service.id === svc.id);
                 const upload = uploadStates[svc.id];
                 return (
@@ -322,6 +332,47 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
             )}
           </AnimatePresence>
         </div>
+
+        {/* Load More / Show count bar */}
+        {filtered.length > 0 && (
+          <div className="mt-8 flex flex-col items-center gap-3">
+            <p className="text-xs text-gray-400">
+              {t(
+                `Showing ${Math.min(visibleCount, filtered.length)} of ${filtered.length} services`,
+                `${filtered.length} ସେବا মধ্য়ে ${Math.min(visibleCount, filtered.length)} দেখাচ্ছে`
+              )}
+            </p>
+            <div className="w-full max-w-xs bg-gray-100 rounded-full h-1.5">
+              <motion.div
+                className="h-full bg-[#F06421] rounded-full"
+                animate={{ width: `${(Math.min(visibleCount, filtered.length) / filtered.length) * 100}%` }}
+                transition={{ duration: 0.4 }}
+              />
+            </div>
+            <div className="flex gap-3">
+              {hasMore && (
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                  className="flex items-center gap-2 px-6 py-2.5 bg-[#003366] text-white rounded-full text-sm font-bold hover:bg-[#004488] transition-colors shadow-md"
+                >
+                  <ChevronDown size={16} />
+                  {t(`Load ${Math.min(PAGE_SIZE, filtered.length - visibleCount)} More`, `${Math.min(PAGE_SIZE, filtered.length - visibleCount)}ଟି ଅଧିକ`)}
+                </motion.button>
+              )}
+              {visibleCount > PAGE_SIZE && (
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setVisibleCount(PAGE_SIZE)}
+                  className="flex items-center gap-2 px-6 py-2.5 bg-white text-[#003366] border border-[#003366]/20 rounded-full text-sm font-semibold hover:border-[#003366] transition-colors"
+                >
+                  <ChevronUp size={16} />
+                  {t("Show Less", "କମ ଦেখাନ୍ତୁ")}
+                </motion.button>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Basket Drawer */}
         <AnimatePresence>
