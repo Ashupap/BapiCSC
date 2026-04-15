@@ -1,0 +1,100 @@
+Project Goal: Build a high-conversion, professional landing page and service-booking frontend for a Common Service Center (CSC) and Bank of Baroda BC Point in Balasore, Odisha. The theme is "Skip the Queue: Easy CSC Services."
+
+CRITICAL INSTRUCTION: DO NOT BUILD A BACKEND. * This is a Frontend-only build.
+
+Use Mock Data for all services and categories.
+
+Simulate the document upload process (progress bars, success states) without actual server calls.
+
+All external communication should be via WhatsApp Deep Links (wa.me).
+
+1. Technical Stack
+Framework: React or Next.js (App Router, Client-side only).
+
+Styling: Tailwind CSS.
+
+Icons: Lucide-react.
+
+Animations: Framer Motion (for the "Skip the Queue" feel and smooth transitions).
+
+Search: Fuse.js for fuzzy-search of services.
+
+2. Visual Identity & Design System
+Colors: * Primary: #F06421 (Bank of Baroda Orange) for CTAs and highlights.
+
+Secondary: #003366 (Navy Blue) for headers and trust elements.
+
+Background: Clean White/Light Gray (#F8FAFC).
+
+Persona: Professional, trustworthy, and modern. Highlight the owner as a tech-savvy "Digital Custodian."
+
+3. Page Structure & Sections (To be built in order)
+A. Navigation & Header
+Sticky Header: Contains a professional circular headshot of the owner (placeholder image) on the left.
+
+Trust Signals: "Verified Bank of Baroda BC Point" badge and "Authorized VLE" text.
+
+Language Toggle: A toggle for English / Odia (UI text only, no translation logic needed yet).
+
+Sticky Search Bar: A high-visibility search bar that remains fixed at the top on scroll.
+
+B. Hero Section (Carousel)
+Component: A high-impact image carousel.
+
+Content: 3 slides featuring placeholders for:
+
+A professional shop front.
+
+The owner assisting a customer.
+
+Close-up of government certificates.
+
+Motto Overlay: "Stop Standing in Line. Start Getting Results. Balasore’s Trusted Digital Gateway."
+
+CTA: A prominent "Browse Services" button that smooth-scrolls to the Service Engine.
+
+C. "Express Service" Ribbon
+Component: An auto-scrolling horizontal marquee/ticker.
+
+Text: "SKIP THE QUEUE: Income Certificate | Caste Certificate | BoB Banking | PAN Card | FASTag | Kalia Yojana | Bill Payments."
+
+D. "How It Works" (The 3-Step Process)
+Use a grid of 3 cards:
+
+Search: Find your service and requirements.
+
+Upload: Snap photos of your docs and upload securely.
+
+WhatsApp: Get your quote and digital delivery via WhatsApp.
+
+E. The Service Engine (Core Functionality)
+Fuzzy Search: Filter a list of 100+ services using Fuse.js.
+
+Service Basket: A "shopping cart" style sidebar or bottom sheet. Users can add multiple services.
+
+Smart Checklist: When a service is added, display a checklist of required documents (e.g., Aadhar, Photo, Bill).
+
+Direct-Push Upload Zone: A beautiful drag-and-drop area with a "Success" animation. Simulate the upload progress.
+
+F. "About the Expert" & Credibility
+Section highlighting the owner’s 10+ years in IT Infrastructure.
+
+Focus on data security and speed: "Your data stays private. Your time stays yours."
+
+G. Footer & Map
+FAQ: Accordion for common questions about Aadhar safety and processing times.
+
+Map: A placeholder for a Google Maps embed for the Balasore location.
+
+Contact: Social links and a "Chat Now" floating WhatsApp button.
+
+4. Logic Requirements (Client-Side)
+Service Data: Create a services.json file with fields for id, name, category, required_docs, and base_price_range.
+
+WhatsApp Link Generator: When a user clicks "Get Quote on WhatsApp," generate a link like:
+https://wa.me/PHONE_NUMBER?text=Hi, I want to apply for [Service Name]. My Ticket ID is [RandomID].
+
+UPI Deep Link: Mock a UPI QR code generation based on a static VPA for the "Payment" preview.
+
+5. Final Delivery Note
+Ensure the site feels "Express." Use fast transitions and clear, bold typography. The user should feel that using this website is the fastest way to get their work done in Balasore.
