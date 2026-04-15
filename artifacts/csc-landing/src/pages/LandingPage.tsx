@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
 import ExpressRibbon from "@/components/ExpressRibbon";
@@ -16,6 +16,15 @@ export default function LandingPage() {
   function scrollToServices() {
     servicesRef.current?.scrollIntoView({ behavior: "smooth" });
   }
+
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const timer = setTimeout(() => {
+        servicesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
