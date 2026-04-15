@@ -5,6 +5,7 @@ import ExpressRibbon from "@/components/ExpressRibbon";
 import HowItWorks from "@/components/HowItWorks";
 import ServiceEngine from "@/components/ServiceEngine";
 import AboutSection from "@/components/AboutSection";
+import Testimonials from "@/components/Testimonials";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import WhatsAppFAB from "@/components/WhatsAppFAB";
@@ -36,6 +37,7 @@ export default function LandingPage() {
         <ServiceEngine searchQuery={searchQuery} />
       </div>
       <AboutSection />
+      <Testimonials />
       <FAQSection />
       <Footer />
       <WhatsAppFAB />

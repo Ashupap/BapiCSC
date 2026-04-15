@@ -11,15 +11,19 @@ export default function WhatsAppFAB() {
       href={`https://wa.me/${PHONE}?text=Hi, I need help with a CSC service in Balasore.`}
       target="_blank"
       rel="noopener noreferrer"
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      transition={{ delay: 1.5, type: "spring", stiffness: 200 }}
-      className="fixed bottom-6 right-4 z-50 flex items-center gap-2 bg-[#25D366] text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-200 px-4 py-3"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ delay: 1.5, type: "spring", stiffness: 220, damping: 20 }}
+      whileHover={{ scale: 1.07 }}
+      whileTap={{ scale: 0.95 }}
+      className="fixed bottom-6 right-4 z-50 flex items-center gap-2.5 bg-[#25D366] text-white rounded-full shadow-xl px-5 py-3.5 font-bold text-sm"
       title="Chat on WhatsApp"
     >
-      <MessageCircle size={22} />
-      <span className="text-sm font-bold hidden sm:inline">
-        {t("Chat Now", "এখন কথা বলুন")}
+      {/* Pulse ring */}
+      <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-25 pointer-events-none" />
+      <MessageCircle size={20} className="relative z-10 flex-shrink-0" />
+      <span className="relative z-10 hidden sm:inline">
+        {t("Chat Now", "ଚ୍ୟାଟ")}
       </span>
     </motion.a>
   );
