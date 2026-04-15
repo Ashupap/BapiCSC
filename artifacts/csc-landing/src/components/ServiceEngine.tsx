@@ -3,12 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Fuse from "fuse.js";
 import {
   Plus, Minus, ShoppingCart, X, CheckCircle2, FileText,
-  MessageCircle, Upload, ChevronDown, ChevronUp
+  MessageCircle, Upload, ChevronLeft, ChevronRight
 } from "lucide-react";
 import { services, categories, Service } from "@/data/services";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 12;
 
 function generateTicketId() {
   return "CSC" + Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -35,7 +35,7 @@ interface ServiceEngineProps {
 export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
   const { t, lang } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [currentPage, setCurrentPage] = useState(1);
   const [basket, setBasket] = useState<BasketItem[]>([]);
   const [basketOpen, setBasketOpen] = useState(false);
   const [uploadStates, setUploadStates] = useState<UploadState>({});
@@ -62,11 +62,16 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
   }, [searchQuery, selectedCategory, fuse]);
 
   useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
+    setCurrentPage(1);
   }, [searchQuery, selectedCategory]);
 
-  const visible = filtered.slice(0, visibleCount);
-  const hasMore = visibleCount < filtered.length;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(currentPage, totalPages);
+  const visible = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  function goToPage(p: number) {
+    setCurrentPage(Math.max(1, Math.min(p, totalPages)));
+  }
 
   function addToBasket(svc: Service) {
     if (!basket.find((b) => b.service.id === svc.id)) {
@@ -177,7 +182,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
         )}
 
         {/* Service Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           <AnimatePresence>
             {filtered.length === 0 ? (
               <motion.div
@@ -195,31 +200,21 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                 return (
                   <motion.div
                     key={svc.id}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ delay: Math.min(i * 0.03, 0.3) }}
-                    className="bg-white rounded-2xl p-5 border border-gray-100 hover:shadow-md transition-all group"
+                    transition={{ delay: Math.min(i * 0.025, 0.25) }}
+                    className="bg-white rounded-xl p-3 border border-gray-100 hover:shadow-md transition-all group flex flex-col"
                   >
                     {/* Category tag */}
-                    <span className="text-xs font-semibold text-[#F06421] bg-orange-50 px-2.5 py-1 rounded-full">
+                    <span className="text-[10px] font-semibold text-[#F06421] bg-orange-50 px-2 py-0.5 rounded-full self-start leading-5">
                       {lang === "od" ? svc.categoryOdia : svc.category}
                     </span>
 
                     {/* Name */}
-                    <h3 className="mt-2.5 font-bold text-[#003366] text-base leading-tight">
+                    <h3 className="mt-1.5 font-bold text-[#003366] text-sm leading-tight">
                       {lang === "od" ? svc.nameOdia : svc.name}
                     </h3>
-
-                    {/* Description */}
-                    <p className="text-xs text-gray-500 mt-1">
-                      {lang === "od" ? svc.descriptionOdia : svc.description}
-                    </p>
-
-                    {/* Price */}
-                    <div className="mt-2 text-sm font-semibold text-[#003366]">
-                      {svc.base_price_range}
-                    </div>
 
                     {/* Document Checklist (shows when in basket) */}
                     {inBasket && (
@@ -288,12 +283,12 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                     )}
 
                     {/* Actions */}
-                    <div className="mt-4 flex gap-2">
+                    <div className="mt-auto pt-2 flex gap-1.5">
                       <button
                         onClick={() =>
                           inBasket ? removeFromBasket(svc.id) : addToBasket(svc)
                         }
-                        className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                        className={`flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[10px] font-bold transition-all ${
                           inBasket
                             ? "bg-red-50 text-red-500 border border-red-200 hover:bg-red-100"
                             : "bg-[#003366] text-white hover:bg-[#004488]"
@@ -301,13 +296,13 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                       >
                         {inBasket ? (
                           <>
-                            <Minus size={13} />
-                            {t("Remove", "ହଟାନ୍ତୁ")}
+                            <Minus size={11} />
+                            {t("Remove", "ହଟ")}
                           </>
                         ) : (
                           <>
-                            <Plus size={13} />
-                            {t("Add to Basket", "ଝୁଡ଼ି ଯୋଡ଼ନ୍ତୁ")}
+                            <Plus size={11} />
+                            {t("Add", "ଯୋଡ଼")}
                           </>
                         )}
                       </button>
@@ -320,10 +315,9 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                         )}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-[#25D366] text-white text-xs font-bold hover:bg-[#1da851] transition-colors"
+                        className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#25D366] text-white text-[10px] font-bold hover:bg-[#1da851] transition-colors"
                       >
-                        <MessageCircle size={13} />
-                        <span className="hidden sm:inline">{t("Quote", "ଉଦ୍ଧୃତ")}</span>
+                        <MessageCircle size={11} />
                       </a>
                     </div>
                   </motion.div>
@@ -333,43 +327,55 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
           </AnimatePresence>
         </div>
 
-        {/* Load More / Show count bar */}
-        {filtered.length > 0 && (
-          <div className="mt-8 flex flex-col items-center gap-3">
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-6 flex flex-col items-center gap-2">
             <p className="text-xs text-gray-400">
-              {t(
-                `Showing ${Math.min(visibleCount, filtered.length)} of ${filtered.length} services`,
-                `${filtered.length} ସେବا মধ্য়ে ${Math.min(visibleCount, filtered.length)} দেখাচ্ছে`
-              )}
+              {"Page " + safePage + " of " + totalPages + " · " + filtered.length + " services"}
             </p>
-            <div className="w-full max-w-xs bg-gray-100 rounded-full h-1.5">
-              <motion.div
-                className="h-full bg-[#F06421] rounded-full"
-                animate={{ width: `${(Math.min(visibleCount, filtered.length) / filtered.length) * 100}%` }}
-                transition={{ duration: 0.4 }}
-              />
-            </div>
-            <div className="flex gap-3">
-              {hasMore && (
-                <motion.button
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-[#003366] text-white rounded-full text-sm font-bold hover:bg-[#004488] transition-colors shadow-md"
-                >
-                  <ChevronDown size={16} />
-                  {t(`Load ${Math.min(PAGE_SIZE, filtered.length - visibleCount)} More`, `${Math.min(PAGE_SIZE, filtered.length - visibleCount)}ଟି ଅଧିକ`)}
-                </motion.button>
-              )}
-              {visibleCount > PAGE_SIZE && (
-                <motion.button
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setVisibleCount(PAGE_SIZE)}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-white text-[#003366] border border-[#003366]/20 rounded-full text-sm font-semibold hover:border-[#003366] transition-colors"
-                >
-                  <ChevronUp size={16} />
-                  {t("Show Less", "କମ ଦেখাନ୍ତୁ")}
-                </motion.button>
-              )}
+            <div className="flex items-center gap-1">
+              <motion.button
+                whileTap={{ scale: 0.93 }}
+                disabled={safePage === 1}
+                onClick={() => goToPage(safePage - 1)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                <ChevronLeft size={16} />
+              </motion.button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
+                const isActive = p === safePage;
+                const isNear = Math.abs(p - safePage) <= 1 || p === 1 || p === totalPages;
+                if (!isNear) {
+                  if (p === safePage - 2 || p === safePage + 2) {
+                    return <span key={p} className="text-gray-400 text-xs px-1">&hellip;</span>;
+                  }
+                  return null;
+                }
+                return (
+                  <motion.button
+                    key={p}
+                    whileTap={{ scale: 0.93 }}
+                    onClick={() => goToPage(p)}
+                    className={`w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition-all ${
+                      isActive
+                        ? "bg-[#003366] text-white shadow-md"
+                        : "border border-gray-200 text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    {p}
+                  </motion.button>
+                );
+              })}
+
+              <motion.button
+                whileTap={{ scale: 0.93 }}
+                disabled={safePage === totalPages}
+                onClick={() => goToPage(safePage + 1)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                <ChevronRight size={16} />
+              </motion.button>
             </div>
           </div>
         )}
