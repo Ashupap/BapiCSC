@@ -23,29 +23,25 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
         scrolled ? "bg-white shadow-lg" : "bg-white/95 backdrop-blur-sm"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative overflow-visible">
+
         {/* Top bar */}
-        <div className="flex items-center justify-between py-3 border-b border-gray-100">
-          {/* Logo + Owner */}
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#F06421] to-[#e05010] flex items-center justify-center text-white font-bold text-lg shadow-md flex-shrink-0">
-              S
+        <div className="flex items-center justify-between py-3 border-b border-gray-100 pl-[72px] sm:pl-[84px]">
+          {/* Owner info — avatar overlaps into search row via absolute positioning */}
+          <div>
+            <div className="font-bold text-[#003366] text-sm sm:text-base leading-tight">
+              {t("Sanjay Kumar CSC", "ସଞ୍ଜୟ କୁମାର CSC")}
             </div>
-            <div>
-              <div className="font-bold text-[#003366] text-sm sm:text-base leading-tight">
-                {t("Sanjay Kumar CSC", "ସଞ୍ଜୟ କୁମାର CSC")}
-              </div>
-              <div className="flex items-center gap-1 flex-wrap">
-                <span className="inline-flex items-center gap-1 text-xs text-[#F06421] font-medium">
-                  <BadgeCheck size={12} />
-                  {t("Authorized VLE", "ଅଧିକୃତ VLE")}
-                </span>
-                <span className="text-gray-300 text-xs">|</span>
-                <span className="inline-flex items-center gap-1 text-xs text-[#003366] font-medium">
-                  <ShieldCheck size={12} />
-                  {t("Verified BoB BC Point", "BoB BC ପଏଣ୍ଟ ସ୍ୱୀକୃତ")}
-                </span>
-              </div>
+            <div className="flex items-center gap-1 flex-wrap">
+              <span className="inline-flex items-center gap-1 text-xs text-[#F06421] font-medium">
+                <BadgeCheck size={12} />
+                {t("Authorized VLE", "ଅଧିକୃତ VLE")}
+              </span>
+              <span className="text-gray-300 text-xs">|</span>
+              <span className="inline-flex items-center gap-1 text-xs text-[#003366] font-medium">
+                <ShieldCheck size={12} />
+                {t("Verified BoB BC Point", "BoB BC ପଏଣ୍ଟ ସ୍ୱୀକୃତ")}
+              </span>
             </div>
           </div>
 
@@ -77,8 +73,8 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
           </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="py-2.5">
+        {/* Search Bar — left padding reserves space for overlapping avatar */}
+        <div className="py-2.5 pl-[72px] sm:pl-[84px]">
           <div className="relative">
             <Search
               size={18}
@@ -96,6 +92,15 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
             />
           </div>
         </div>
+
+        {/* Avatar — absolutely positioned, spanning top-bar + search-bar */}
+        <div
+          className="absolute left-4 sm:left-6 top-2 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-[#F06421] to-[#e05010] flex items-center justify-center text-white font-bold text-3xl sm:text-4xl shadow-lg border-4 border-white z-10 select-none"
+          style={{ top: "6px" }}
+        >
+          S
+        </div>
+
       </div>
     </header>
   );
