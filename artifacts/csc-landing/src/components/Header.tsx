@@ -52,9 +52,9 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
   };
 
   const handleSuggestion = (s: string) => {
-    setLocalQuery(s);
     onSearch(s);
     setMobileSearchOpen(false);
+    setLocalQuery("");
     setTimeout(() => {
       document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
     }, 100);
@@ -298,7 +298,8 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
               <div className="px-4 pt-4 pb-6">
                 <button
                   onClick={() => {
-                    handleOverlayClose();
+                    setMobileSearchOpen(false);
+                    setLocalQuery("");
                     setTimeout(() => {
                       document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
                     }, 100);
