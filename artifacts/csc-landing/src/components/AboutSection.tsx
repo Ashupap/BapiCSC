@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ShieldCheck, Clock, Award, Users, Zap, Lock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import cscKioskLogo from "@assets/CSC-Kiosk-Logo_1776321648152.png";
 
 function LogoBadge({ src, alt, fallback, bg }: { src: string; alt: string; fallback: string; bg: string }) {
   return (
@@ -118,10 +119,10 @@ export default function AboutSection() {
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <LogoBadge
-                    src="https://upload.wikimedia.org/wikipedia/en/5/5b/CSC_Logo.png"
-                    alt="CSC India"
+                    src={cscKioskLogo}
+                    alt="CSC — Your Trusted Neighbourhood Kiosk"
                     fallback="CSC India"
-                    bg="bg-orange-50"
+                    bg="bg-slate-50"
                   />
                   <LogoBadge
                     src="https://upload.wikimedia.org/wikipedia/en/thumb/4/44/Bank_of_Baroda_logo.svg/200px-Bank_of_Baroda_logo.svg.png"
