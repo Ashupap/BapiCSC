@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowDown, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import cscServicesPoster from "@assets/CSC_Services_5_Poster-01_1776321648151.jpg";
-import aadhaarPoster from "@assets/UCL_Aadhaar-01_1776321648153.jpg";
-import pmWelfarePoster from "@assets/Passport_Pan_Card-01_1776321648152.jpg";
+import cscServicesPoster from "@assets/poster_csc_opt.webp";
+import aadhaarPoster from "@assets/poster_aadhaar_opt.webp";
+import pmWelfarePoster from "@assets/poster_pmwelfare_opt.webp";
 
 const PHONE = "919437000000";
 
@@ -270,8 +270,12 @@ export default function HeroCarousel({ onBrowse }: HeroCarouselProps) {
                 <img
                   src={slide.poster}
                   alt={slide.posterLabel}
+                  width={700}
+                  height={990}
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full h-auto object-cover"
-                  style={{ maxHeight: "520px" }}
+                  style={{ maxHeight: "520px", contentVisibility: "auto" }}
                 />
                 {/* Label overlay at bottom */}
                 <div className="absolute bottom-0 left-0 right-0 px-5 py-3 bg-gradient-to-t from-black/70 to-transparent">
