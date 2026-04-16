@@ -36,7 +36,7 @@ const highlights = [
   { icon: Award, color: "#003366", en: "10+ Years Expertise", od: "10+ ବର୍ଷ ଅଭିଜ୍ଞତା" },
   { icon: Users, color: "#F06421", en: "5000+ Happy Clients", od: "5000+ ସନ୍ତୁଷ୍ଟ ଗ୍ରାହୀ" },
   { icon: Zap, color: "#003366", en: "Same-Day Processing", od: "ସେଦିନ ପ୍ରକ୍ରିୟାକରଣ" },
-  { icon: ShieldCheck, color: "#F06421", en: "IT Infrastructure Expert", od: "IT ଭିତ୍ତିଭୂମି ବିଶେଷଜ୍ଞ" },
+  { icon: ShieldCheck, color: "#F06421", en: "Fast Same-Day Service", od: "ଶୀଘ୍ର ସେଦିନ ସେବା" },
 ];
 
 export default function AboutSection() {
@@ -95,8 +95,8 @@ export default function AboutSection() {
               </h2>
               <p className="text-gray-600 leading-relaxed text-base mb-6">
                 {t(
-                  "With over 10 years in IT Infrastructure and digital services, I've helped thousands of families in Balasore navigate government procedures without stress. As a Verified Bank of Baroda BC Point and Authorized CSC-VLE, every service I provide is 100% legitimate, fast, and secure.",
-                  "IT ଭିତ୍ତିଭୂମି ଓ ଡିଜିଟାଲ ସେବାରେ 10+ ବର୍ଷ ଅଭିଜ୍ଞତା ସହ, ଆମେ ବାଲେଶ୍ୱରର ହଜାରେ ପରିବାରଙ୍କୁ ଚିନ୍ତାମୁକ୍ତ ଭାବରେ ସରକାରୀ ପ୍ରକ୍ରିୟା ସଂପୂର୍ଣ୍ଣ କରିବାରେ ସାହାଯ୍ୟ କରିଛୁ।"
+                  "With over 10 years of experience in digital services, I've helped thousands of families in Balasore navigate government procedures without stress. As a Verified Bank of Baroda BC Point and Authorized CSC-VLE, every service I provide is 100% legitimate, fast, and secure.",
+                  "10+ ବର୍ଷ ଡିଜିଟାଲ ସେବା ଅଭିଜ୍ଞତା ସହ, ଆମେ ବାଲେଶ୍ୱରର ହଜାରେ ପରିବାରଙ୍କୁ ଚିନ୍ତାମୁକ୍ତ ଭାବରେ ସରକାରୀ ପ୍ରକ୍ରିୟା ସଂପୂର୍ଣ୍ଣ କରିବାରେ ସାହାଯ୍ୟ କରିଛୁ।"
                 )}
               </p>
 

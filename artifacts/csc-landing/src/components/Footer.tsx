@@ -33,25 +33,34 @@ export default function Footer() {
             className="mt-3 text-white/85 text-base max-w-lg mx-auto"
           >
             {t(
-              "WhatsApp us your documents and get any government service done — without the hassle.",
-              "ଦଲିଲ WhatsApp ରେ ପଠାନ୍ତୁ ଓ ଯେ କୌଣସି ସରକାରୀ ସେବା ସଂପୂର୍ଣ୍ଣ କରନ୍ତୁ — ଝଞ୍ଝଟ ଛଡ଼ା।"
+              "Search your service, upload documents, and receive delivery — our simple 3-step process makes every government service effortless.",
+              "ସେବା ଖୋଜନ୍ତୁ, ଦଲିଲ ଅପଲୋଡ କରନ୍ତୁ, ଡେଲିଭରି ପାନ୍ତୁ — ଆମ 3 ପଦକ୍ଷେପ ପ୍ରକ୍ରିୟାରେ।"
             )}
           </motion.p>
-          <motion.a
-            href={`https://wa.me/${PHONE}?text=Hi, I want to get started with a CSC service.`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.18 }}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="mt-7 inline-flex items-center gap-2.5 bg-white text-[#F06421] font-extrabold px-8 py-4 rounded-full shadow-2xl shadow-black/20 text-sm sm:text-base hover:bg-gray-50 transition-all duration-200"
+            className="mt-7 flex flex-wrap items-center justify-center gap-3"
           >
-            <MessageCircle size={18} />
-            {t("Start on WhatsApp — It's Free", "WhatsApp ରେ ଆରମ୍ଭ — ଶୁଳ୍କ ନାହିଁ")}
-          </motion.a>
+            <motion.a
+              href="#services"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2.5 bg-white text-[#F06421] font-extrabold px-8 py-4 rounded-full shadow-2xl shadow-black/20 text-sm sm:text-base hover:bg-gray-50 transition-all duration-200"
+            >
+              {t("Browse Services", "ସେବା ଦେଖନ୍ତୁ")}
+            </motion.a>
+            <motion.a
+              href="#how-it-works"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2.5 bg-white/15 border border-white/40 text-white font-bold px-8 py-4 rounded-full text-sm sm:text-base hover:bg-white/25 transition-all duration-200 backdrop-blur-sm"
+            >
+              {t("See How It Works", "କିପରି କାମ କରେ")}
+            </motion.a>
+          </motion.div>
         </div>
       </section>
 
