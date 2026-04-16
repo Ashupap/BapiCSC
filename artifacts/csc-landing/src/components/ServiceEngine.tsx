@@ -284,8 +284,6 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                       {lang === "od" ? svc.nameOdia : svc.name}
                     </h3>
 
-                    {/* Price */}
-                    <p className="text-xs text-gray-400 font-medium mt-1.5 mb-2">{svc.base_price_range}</p>
 
                     {/* Document Checklist (shows when in basket) */}
                     {inBasket && (
@@ -508,7 +506,6 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                             <p className="font-bold text-[#003366] text-sm leading-tight truncate">
                               {lang === "od" ? item.service.nameOdia : item.service.name}
                             </p>
-                            <p className="text-xs text-gray-400 mt-0.5">{item.service.base_price_range}</p>
                             <p className="text-xs text-[#F06421] font-mono mt-1 font-semibold">ID: {item.ticketId}</p>
                           </div>
                           <button

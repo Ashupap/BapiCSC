@@ -3,6 +3,7 @@ import { Search, ShieldCheck, BadgeCheck, Globe, Menu, X, MessageCircle, Chevron
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import cscKioskLogo from "@assets/CSC-Kiosk-Logo_1776321648152.png";
+import bobLogo from "@assets/BankOfBarodaLogo_1776323550390.png";
 
 interface HeaderProps {
   onSearch: (q: string) => void;
@@ -46,32 +47,42 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center gap-3 sm:gap-4 h-[68px]">
 
-            {/* Brand: CSC Kiosk logo + owner photo + name */}
+            {/* Brand: owner photo + name + CSC Kiosk logo */}
             <a href="#" className="flex items-center gap-3 flex-shrink-0 group">
-              {/* Owner photo */}
+              {/* Owner photo — large enough to see the face clearly */}
               <div className="relative flex-shrink-0">
                 <img
                   src={OWNER_PHOTO}
                   alt="Sanjay Kumar"
-                  className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-cover border-2 border-[#F06421]/30 shadow-sm group-hover:border-[#F06421]/60 transition-all duration-300"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border-2 border-[#F06421]/40 shadow-md group-hover:border-[#F06421] transition-all duration-300"
                 />
-                <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-[#25D366] rounded-full border-2 border-white" />
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#25D366] rounded-full border-2 border-white shadow-sm" />
               </div>
 
-              {/* CSC Kiosk logo */}
-              <img
-                src={cscKioskLogo}
-                alt="CSC — Your Trusted Neighbourhood Kiosk"
-                className="hidden sm:block h-9 w-auto object-contain"
-              />
-
-              {/* Name tag on mobile */}
-              <div className="sm:hidden">
-                <div className="font-extrabold text-[#003366] text-sm leading-tight">Sanjay Kumar</div>
-                <div className="flex items-center gap-1 mt-0.5">
-                  <BadgeCheck size={9} className="text-[#F06421]" />
-                  <span className="text-[10px] text-[#F06421] font-semibold">VLE</span>
+              {/* Name + badges */}
+              <div className="flex flex-col justify-center">
+                <div className="font-extrabold text-[#003366] text-sm leading-tight">
+                  {t("Sanjay Kumar CSC", "ସଞ୍ଜୟ କୁମାର CSC")}
                 </div>
+                <div className="text-[10px] text-gray-500 leading-tight mt-0.5 hidden sm:block">
+                  {t("Balasore, Odisha", "ବାଲେଶ୍ୱର, ଓଡ଼ିଶା")}
+                </div>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="inline-flex items-center gap-0.5 text-[10px] text-[#F06421] font-bold">
+                    <BadgeCheck size={9} />VLE
+                  </span>
+                  <span className="text-gray-300">·</span>
+                  <span className="inline-flex items-center gap-0.5 text-[10px] text-[#003366] font-bold">
+                    <ShieldCheck size={9} />BoB BC
+                  </span>
+                </div>
+              </div>
+
+              {/* CSC + BoB logos — desktop only */}
+              <div className="hidden lg:flex items-center gap-2 ml-1">
+                <img src={cscKioskLogo} alt="CSC Kiosk" className="h-8 w-auto object-contain" />
+                <div className="w-px h-6 bg-gray-200" />
+                <img src={bobLogo} alt="Bank of Baroda" className="h-7 w-auto object-contain" />
               </div>
             </a>
 
@@ -177,9 +188,11 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
                 </button>
               </div>
 
-              {/* CSC Kiosk logo in drawer */}
-              <div className="flex items-center justify-center py-3 border-b border-gray-100 bg-gray-50">
-                <img src={cscKioskLogo} alt="CSC Kiosk" className="h-10 w-auto object-contain" />
+              {/* CSC + BoB logos in drawer */}
+              <div className="flex items-center justify-center gap-4 py-3 border-b border-gray-100 bg-gray-50">
+                <img src={cscKioskLogo} alt="CSC Kiosk" className="h-9 w-auto object-contain" />
+                <div className="w-px h-6 bg-gray-200" />
+                <img src={bobLogo} alt="Bank of Baroda" className="h-8 w-auto object-contain" />
               </div>
 
               <nav className="flex-1 p-4 space-y-1">

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ShieldCheck, Clock, Award, Users, Zap, Lock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import cscKioskLogo from "@assets/CSC-Kiosk-Logo_1776321648152.png";
+import bobLogo from "@assets/BankOfBarodaLogo_1776323550390.png";
 
 function LogoBadge({ src, alt, fallback, bg }: { src: string; alt: string; fallback: string; bg: string }) {
   return (
@@ -125,10 +126,10 @@ export default function AboutSection() {
                     bg="bg-slate-50"
                   />
                   <LogoBadge
-                    src="https://upload.wikimedia.org/wikipedia/en/thumb/4/44/Bank_of_Baroda_logo.svg/200px-Bank_of_Baroda_logo.svg.png"
+                    src={bobLogo}
                     alt="Bank of Baroda"
                     fallback="Bank of Baroda"
-                    bg="bg-blue-50"
+                    bg="bg-orange-50"
                   />
                 </div>
               </div>
