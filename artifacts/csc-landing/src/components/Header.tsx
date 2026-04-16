@@ -25,7 +25,13 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
   }, []);
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--header-h", "68px");
+    const updateHeight = () => {
+      const h = window.innerWidth < 640 ? "116px" : "68px";
+      document.documentElement.style.setProperty("--header-h", h);
+    };
+    updateHeight();
+    window.addEventListener("resize", updateHeight, { passive: true });
+    return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
   const navLinks = [
@@ -89,8 +95,8 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
             {/* Divider */}
             <div className="hidden sm:block w-px h-8 bg-gray-200 flex-shrink-0" />
 
-            {/* Search */}
-            <div className="flex-1 relative max-w-sm mx-auto">
+            {/* Search — desktop only (sm+); mobile gets its own row below */}
+            <div className="hidden sm:block flex-1 relative max-w-sm mx-auto">
               <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#F06421]" />
               <input
                 type="search"
@@ -147,6 +153,21 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
             </div>
 
           </div>
+
+          {/* Mobile search row — visible only below sm breakpoint */}
+          <div className="sm:hidden px-1 pb-2.5">
+            <div className="relative">
+              <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#F06421]" />
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => onSearch(e.target.value)}
+                placeholder={t("Search 100+ services…", "100+ ସେବା ଖୋଜନ୍ତୁ…")}
+                className="w-full pl-10 pr-4 py-2.5 rounded-full border-2 border-[#003366]/15 focus:border-[#F06421] focus:outline-none text-sm bg-gray-50 focus:bg-white transition-all duration-200 shadow-sm"
+              />
+            </div>
+          </div>
+
         </div>
       </header>
 
