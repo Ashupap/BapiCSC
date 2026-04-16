@@ -47,7 +47,7 @@ export default function HowItWorks() {
       id="how-it-works"
       style={{ background: "linear-gradient(135deg, #001a40 0%, #002a5c 60%, #003a7a 100%)" }}
     >
-      {/* Subtle grid pattern */}
+      {/* Grid */}
       <div
         className="absolute inset-0 opacity-[0.04]"
         style={{
@@ -66,7 +66,7 @@ export default function HowItWorks() {
             viewport={{ once: true }}
             className="inline-block text-xs font-bold tracking-[0.2em] text-[#F06421] uppercase mb-3"
           >
-            {t("Simple Process", "ସରଳ ପ୍ରକ୍ରିୟା")}
+            {t("Simple Process", "ସরᳰ ᱯ᳭ᱤᱦᳱᱣᱡ")}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 16 }}
@@ -90,8 +90,8 @@ export default function HowItWorks() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8 relative">
-          {/* Connector */}
-          <div className="hidden sm:block absolute top-14 left-[30%] right-[30%] h-px bg-gradient-to-r from-[#F06421]/60 via-[#60a5fa]/60 to-[#4ade80]/60 z-0" />
+          {/* Connector line */}
+          <div className="hidden sm:block absolute top-10 left-[33%] right-[33%] h-px bg-gradient-to-r from-[#F06421]/50 via-[#60a5fa]/50 to-[#4ade80]/50 z-0" />
 
           {steps.map((step, i) => (
             <motion.div
@@ -102,34 +102,40 @@ export default function HowItWorks() {
               transition={{ delay: i * 0.13, duration: 0.55 }}
               className="relative z-10 group"
             >
-              <div className="bg-white/5 border border-white/10 backdrop-blur-sm rounded-2xl p-7 h-full hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                {/* Step number */}
+              <div className="relative bg-white/5 border border-white/10 backdrop-blur-sm rounded-2xl p-7 h-full hover:bg-white/10 hover:border-white/20 transition-all duration-300 overflow-hidden">
+
+                {/* Step number — watermark at top-right, NOT overlapping icon */}
                 <div
-                  className="text-6xl font-black leading-none mb-4 select-none"
+                  className="absolute top-4 right-5 text-7xl font-black leading-none select-none pointer-events-none"
                   style={{
                     color: step.accentColor,
-                    opacity: 0.15,
+                    opacity: 0.10,
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
                   }}
                 >
                   {step.number}
                 </div>
 
-                {/* Icon */}
+                {/* Icon bubble — clean, no negative margin */}
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 -mt-10"
-                  style={{ backgroundColor: `${step.accentColor}20`, border: `1px solid ${step.accentColor}40` }}
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+                  style={{
+                    backgroundColor: `${step.accentColor}22`,
+                    border: `1.5px solid ${step.accentColor}44`,
+                  }}
                 >
-                  <step.icon size={22} style={{ color: step.accentColor }} />
+                  <step.icon size={26} style={{ color: step.accentColor }} />
                 </div>
 
+                {/* Step label */}
                 <div
-                  className="text-[10px] font-bold tracking-[0.15em] uppercase mb-2"
+                  className="text-[10px] font-bold tracking-[0.18em] uppercase mb-2"
                   style={{ color: step.accentColor }}
                 >
                   {t(step.stepEn, step.stepOd)}
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2 leading-snug">
+
+                <h3 className="text-lg font-bold text-white mb-3 leading-snug">
                   {t(step.titleEn, step.titleOd)}
                 </h3>
                 <p className="text-sm text-white/55 leading-relaxed">

@@ -2,6 +2,25 @@ import { motion } from "framer-motion";
 import { ShieldCheck, Clock, Award, Users, Zap, Lock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+function LogoBadge({ src, alt, fallback, bg }: { src: string; alt: string; fallback: string; bg: string }) {
+  return (
+    <div className={`flex items-center justify-center px-4 py-2 rounded-xl border border-gray-100 ${bg} h-14`}>
+      <img
+        src={src}
+        alt={alt}
+        className="h-8 w-auto object-contain max-w-[100px]"
+        onError={(e) => {
+          e.currentTarget.style.display = "none";
+          const span = document.createElement("span");
+          span.className = "text-xs font-black text-gray-700";
+          span.innerText = fallback;
+          e.currentTarget.parentElement?.appendChild(span);
+        }}
+      />
+    </div>
+  );
+}
+
 const stats = [
   { value: "10+", labelEn: "Years Experience", labelOd: "ବର୍ଷ ଅଭିଜ୍ଞତା", icon: Award, color: "#F06421" },
   { value: "5000+", labelEn: "Customers Served", labelOd: "ଗ୍ରାହୀ ସେବା", icon: Users, color: "#003366" },
@@ -90,6 +109,27 @@ export default function AboutSection() {
                 <p className="mt-3 text-[#F06421] text-sm font-bold">
                   — {t("Sanjay Kumar, Founder & VLE", "ସଞ୍ଜୟ କୁମାର, ପ୍ରତିଷ୍ଠାତା ଓ VLE")}
                 </p>
+              </div>
+
+              {/* Official brand logos */}
+              <div className="mt-7">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
+                  {t("Authorized Partner Of", "ଅଧিকৃत ভাগীদার")}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <LogoBadge
+                    src="https://upload.wikimedia.org/wikipedia/en/5/5b/CSC_Logo.png"
+                    alt="CSC India"
+                    fallback="CSC India"
+                    bg="bg-orange-50"
+                  />
+                  <LogoBadge
+                    src="https://upload.wikimedia.org/wikipedia/en/thumb/4/44/Bank_of_Baroda_logo.svg/200px-Bank_of_Baroda_logo.svg.png"
+                    alt="Bank of Baroda"
+                    fallback="Bank of Baroda"
+                    bg="bg-blue-50"
+                  />
+                </div>
               </div>
             </motion.div>
 
