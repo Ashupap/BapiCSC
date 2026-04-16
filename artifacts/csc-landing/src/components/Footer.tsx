@@ -67,7 +67,7 @@ export default function Footer() {
                   S
                 </div>
                 <div>
-                  <p className="font-extrabold text-base">{t("Sanjay Kumar CSC", "ସଞ୍ଜୟ କୁମାର CSC")}</p>
+                  <p className="font-extrabold text-base">{t("Bapi Bhai CSC", "ବାପି ଭାଇ CSC")}</p>
                   <p className="text-xs text-white/50">{t("Balasore, Odisha", "ବାଲେଶ୍ୱର, ଓଡ଼ିଶା")}</p>
                 </div>
               </div>
@@ -174,7 +174,7 @@ export default function Footer() {
           {/* Bottom bar */}
           <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p className="text-xs text-white/35">
-              © 2025 Sanjay Kumar CSC, Balasore. {t("All rights reserved.", "ସର୍ବস্বত্ব সংরক্ষিত।")}
+              © 2025 Bapi Bhai CSC, Balasore. {t("All rights reserved.", "ସର୍ବস্বত্ব সংরক্ষিত।")}
             </p>
             <p className="text-xs text-white/35 flex items-center gap-1.5">
               {t("Made with", "ତ‌ୈ‌ୟ‌ାର")} <Heart size={11} className="text-[#F06421]" /> {t("for Balasore, Odisha", "ବାଲେଶ୍ୱର ପ‌ାଇଁ")}

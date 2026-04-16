@@ -53,7 +53,7 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
               <div className="relative flex-shrink-0">
                 <img
                   src={OWNER_PHOTO}
-                  alt="Sanjay Kumar"
+                  alt="Bapi Bhai"
                   className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover border-2 border-[#F06421]/40 shadow-md group-hover:border-[#F06421] transition-all duration-300"
                 />
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#25D366] rounded-full border-2 border-white shadow-sm" />
@@ -62,7 +62,7 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
               {/* Name + badges */}
               <div className="flex flex-col justify-center">
                 <div className="font-extrabold text-[#003366] text-sm leading-tight">
-                  {t("Sanjay Kumar CSC", "ସଞ୍ଜୟ କୁମାର CSC")}
+                  {t("Bapi Bhai CSC", "ବାପି ଭାଇ CSC")}
                 </div>
                 <div className="text-[10px] text-gray-500 leading-tight mt-0.5 hidden sm:block">
                   {t("Balasore, Odisha", "ବାଲେଶ୍ୱର, ଓଡ଼ିଶା")}
@@ -172,11 +172,11 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
                 <div className="flex items-center gap-3">
                   <img
                     src={OWNER_PHOTO}
-                    alt="Sanjay Kumar"
+                    alt="Bapi Bhai"
                     className="w-10 h-10 rounded-xl object-cover border-2 border-white/30"
                   />
                   <div>
-                    <p className="font-bold text-white text-sm">{t("Sanjay Kumar CSC", "ସଞ୍ଜୟ CSC")}</p>
+                    <p className="font-bold text-white text-sm">{t("Bapi Bhai CSC", "ବାପି ଭାଇ CSC")}</p>
                     <p className="text-white/60 text-xs">{t("Balasore, Odisha", "ବାଲେଶ୍ୱର")}</p>
                   </div>
                 </div>

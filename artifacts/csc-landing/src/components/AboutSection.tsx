@@ -109,7 +109,7 @@ export default function AboutSection() {
                   )}"
                 </p>
                 <p className="mt-3 text-[#F06421] text-sm font-bold">
-                  — {t("Sanjay Kumar, Founder & VLE", "ସଞ୍ଜୟ କୁମାର, ପ୍ରତିଷ୍ଠାତା ଓ VLE")}
+                  — {t("Bapi Bhai, Founder & VLE", "ବାପି ଭାଇ, ପ୍ରତିଷ୍ଠାତା ଓ VLE")}
                 </p>
               </div>
 
