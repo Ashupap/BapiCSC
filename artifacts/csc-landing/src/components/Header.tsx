@@ -145,8 +145,8 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
               ))}
             </nav>
 
-            {/* Right cluster */}
-            <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Right cluster — ml-auto pushes it to the far right on mobile (where no flex-1 search exists) */}
+            <div className="flex items-center gap-2 flex-shrink-0 ml-auto sm:ml-0">
               <Globe size={13} className="text-gray-400 hidden sm:block" />
               <div className="flex items-center rounded-full border border-[#003366]/20 overflow-hidden bg-gray-50 text-xs font-bold">
                 <button
@@ -193,28 +193,28 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
           >
             <button
               onClick={() => setMobileSearchOpen(true)}
-              className="w-full flex items-center gap-3 px-4 py-3.5 bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,51,102,0.18)] border border-[#003366]/10 active:scale-[0.98] transition-transform"
+              className="w-full flex items-center gap-3 px-4 py-3.5 bg-[#F06421] rounded-2xl shadow-[0_8px_32px_rgba(240,100,33,0.45)] active:scale-[0.98] transition-transform"
             >
               {/* Icon bubble */}
-              <span className="w-9 h-9 flex items-center justify-center rounded-xl bg-[#F06421] flex-shrink-0 shadow-md">
+              <span className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/20 flex-shrink-0">
                 <Search size={17} className="text-white" />
               </span>
 
               {/* Placeholder text */}
               <span className="flex-1 text-left">
-                <span className="block text-sm font-semibold text-gray-700">
+                <span className="block text-sm font-semibold text-white">
                   {searchQuery
                     ? searchQuery
                     : t("Search 100+ services…", "100+ ସେବା ଖୋଜନ୍ତୁ…")}
                 </span>
-                <span className="block text-[11px] text-gray-400 mt-0.5">
+                <span className="block text-[11px] text-white/70 mt-0.5">
                   {t("Aadhaar · PAN · Passport · Bank & more", "ଆଧାର · PAN · ପାସପୋର୍ଟ · ବ୍ୟାଙ୍କ")}
                 </span>
               </span>
 
               {/* Active query badge */}
               {searchQuery && (
-                <span className="flex-shrink-0 text-[10px] font-bold bg-[#F06421]/10 text-[#F06421] px-2 py-0.5 rounded-full">
+                <span className="flex-shrink-0 text-[10px] font-bold bg-white/25 text-white px-2 py-0.5 rounded-full">
                   {t("Active", "ସଦ୍ୟ")}
                 </span>
               )}
