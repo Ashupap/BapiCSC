@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Search, ShieldCheck, BadgeCheck, Globe, Menu, X, MessageCircle, ChevronRight, Sparkles } from "lucide-react";
+import { Search, ShieldCheck, BadgeCheck, Globe, Menu, X, Phone, ChevronRight, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import cscKioskLogo from "@assets/CSC-Kiosk-Logo_1776321648152.png";
@@ -160,13 +160,11 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
               </div>
 
               <a
-                href={`https://wa.me/${PHONE}?text=Hi, I need help with a CSC service.`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:flex items-center gap-1.5 bg-[#25D366] text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-md hover:bg-[#1da851] transition-all"
+                href={`tel:+${PHONE}`}
+                className="hidden sm:flex items-center gap-1.5 bg-[#F06421] text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-md hover:bg-[#d4541a] transition-all"
               >
-                <MessageCircle size={14} />
-                {t("WhatsApp", "WhatsApp")}
+                <Phone size={14} />
+                {t("Call Now", "କଲ ଏବେ")}
               </a>
 
               <button
@@ -377,14 +375,12 @@ export default function Header({ onSearch, searchQuery }: HeaderProps) {
 
               <div className="p-4 border-t">
                 <a
-                  href={`https://wa.me/${PHONE}?text=Hi, I need help with a CSC service.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`tel:+${PHONE}`}
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#25D366] text-white font-bold rounded-xl shadow-md hover:bg-[#1da851]"
+                  className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#F06421] text-white font-bold rounded-xl shadow-md hover:bg-[#d4541a]"
                 >
-                  <MessageCircle size={18} />
-                  {t("Chat on WhatsApp", "WhatsApp ରେ ଚ୍ୟାଟ")}
+                  <Phone size={18} />
+                  {t("Call Now", "କଲ ଏବେ")}
                 </a>
               </div>
             </motion.div>

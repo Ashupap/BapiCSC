@@ -220,6 +220,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
               visible.map((svc, i) => {
                 const inBasket = basket.some((b) => b.service.id === svc.id);
                 const meta = getCategoryMeta(svc.category);
+                const docCount = svc.required_docs.length;
                 return (
                   <motion.div
                     key={svc.id}
@@ -227,76 +228,95 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ delay: Math.min(i * 0.025, 0.25) }}
-                    whileHover={{ y: inBasket ? 0 : -3, transition: { duration: 0.15 } }}
-                    className={`bg-white rounded-2xl p-4 border transition-all duration-200 flex flex-col group ${
+                    whileHover={{ y: inBasket ? 0 : -4, transition: { duration: 0.15 } }}
+                    className={`relative bg-white rounded-2xl border overflow-hidden flex flex-col transition-all duration-200 group ${
                       inBasket
-                        ? "border-[#003366]/30 shadow-md shadow-blue-50 ring-1 ring-[#003366]/10"
-                        : "border-gray-100 hover:border-gray-200 hover:shadow-lg hover:shadow-gray-100"
+                        ? "border-[#003366]/25 shadow-lg shadow-blue-100/60 ring-1 ring-[#003366]/10"
+                        : "border-gray-100 hover:border-gray-200 hover:shadow-xl hover:shadow-gray-100/80"
                     }`}
                   >
-                    {/* Top: emoji + added indicator */}
-                    <div className="flex items-center justify-between mb-3">
-                      <div
-                        className="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
-                        style={{ backgroundColor: meta.bg }}
-                      >
-                        {meta.emoji}
-                      </div>
-                      {inBasket && (
-                        <div className="w-5 h-5 rounded-full bg-[#003366] flex items-center justify-center flex-shrink-0">
-                          <CheckCircle2 size={12} className="text-white" />
+                    {/* Colored top accent bar */}
+                    <div
+                      className="h-1 w-full flex-shrink-0"
+                      style={{ backgroundColor: inBasket ? "#003366" : meta.color }}
+                    />
+
+                    <div className="p-4 flex flex-col flex-1">
+                      {/* Top row: icon + added badge */}
+                      <div className="flex items-start justify-between mb-3">
+                        <div
+                          className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0 shadow-sm"
+                          style={{ backgroundColor: meta.bg }}
+                        >
+                          {meta.emoji}
                         </div>
-                      )}
-                    </div>
-
-                    {/* Category tag */}
-                    <span
-                      className="text-[10px] font-bold px-2 py-0.5 rounded-full self-start leading-5 mb-1.5"
-                      style={{ color: meta.color, backgroundColor: meta.bg }}
-                    >
-                      {lang === "od" ? svc.categoryOdia : svc.category}
-                    </span>
-
-                    {/* Name */}
-                    <h3 className="font-bold text-[#003366] text-sm leading-snug flex-1 mb-3">
-                      {lang === "od" ? svc.nameOdia : svc.name}
-                    </h3>
-
-                    {/* Price */}
-                    <p className="text-xs text-[#F06421] font-semibold mb-3">{svc.base_price_range}</p>
-
-                    {/* Actions */}
-                    <div className="mt-auto flex gap-1.5">
-                      <button
-                        onClick={() =>
-                          inBasket ? removeFromBasket(svc.id) : setPendingService(svc)
-                        }
-                        className={`flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[11px] font-bold transition-all ${
-                          inBasket
-                            ? "bg-red-50 text-red-500 border border-red-200 hover:bg-red-100"
-                            : "bg-[#003366] text-white hover:bg-[#004080] shadow-sm"
-                        }`}
-                      >
                         {inBasket ? (
-                          <><Minus size={11} />{t("Remove", "ହटाउ")}</>
-                        ) : (
-                          <><Plus size={11} />{t("Add", "ଯੋड़ु")}</>
-                        )}
-                      </button>
-                      <a
-                        href={getWhatsAppLink(
-                          basket.find((b) => b.service.id === svc.id) || {
-                            service: svc,
-                            ticketId: generateTicketId(),
-                          }
-                        )}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-9 flex items-center justify-center rounded-xl bg-[#25D366] text-white hover:bg-[#1da851] transition-colors shadow-sm"
-                        title="WhatsApp"
+                          <div className="flex items-center gap-1 bg-[#003366] text-white text-[10px] font-bold px-2 py-1 rounded-full">
+                            <CheckCircle2 size={10} />
+                            {t("Added", "ଯୋଡ଼ି ହୋଇଛି")}
+                          </div>
+                        ) : docCount > 0 ? (
+                          <div
+                            className="text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-0.5"
+                            style={{ color: meta.color, backgroundColor: meta.bg }}
+                          >
+                            <FileText size={9} />
+                            {docCount} {t("docs", "ଦলিল")}
+                          </div>
+                        ) : null}
+                      </div>
+
+                      {/* Category tag */}
+                      <span
+                        className="text-[10px] font-bold px-2 py-0.5 rounded-full self-start leading-5 mb-2"
+                        style={{ color: meta.color, backgroundColor: meta.bg }}
                       >
-                        <MessageCircle size={14} />
-                      </a>
+                        {lang === "od" ? svc.categoryOdia : svc.category}
+                      </span>
+
+                      {/* Name */}
+                      <h3 className="font-extrabold text-[#003366] text-sm leading-snug mb-1.5">
+                        {lang === "od" ? svc.nameOdia : svc.name}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-[11px] text-gray-400 leading-snug line-clamp-2 flex-1 mb-4">
+                        {lang === "od" ? svc.descriptionOdia : svc.description}
+                      </p>
+
+                      {/* Actions */}
+                      <div className="flex gap-1.5">
+                        <button
+                          onClick={() =>
+                            inBasket ? removeFromBasket(svc.id) : setPendingService(svc)
+                          }
+                          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[11px] font-bold transition-all ${
+                            inBasket
+                              ? "bg-red-50 text-red-500 border border-red-200 hover:bg-red-100"
+                              : "bg-[#003366] text-white hover:bg-[#004080] shadow-sm shadow-blue-900/20"
+                          }`}
+                        >
+                          {inBasket ? (
+                            <><Minus size={11} />{t("Remove", "ହটाउ")}</>
+                          ) : (
+                            <><Plus size={11} />{t("Add", "ଯୋड़ु")}</>
+                          )}
+                        </button>
+                        <a
+                          href={getWhatsAppLink(
+                            basket.find((b) => b.service.id === svc.id) || {
+                              service: svc,
+                              ticketId: generateTicketId(),
+                            }
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-10 flex items-center justify-center rounded-xl bg-[#25D366] text-white hover:bg-[#1da851] transition-colors shadow-sm"
+                          title="WhatsApp"
+                        >
+                          <MessageCircle size={14} />
+                        </a>
+                      </div>
                     </div>
                   </motion.div>
                 );
