@@ -66,7 +66,7 @@ export default function HowItWorks() {
             viewport={{ once: true }}
             className="inline-block text-xs font-bold tracking-[0.2em] text-[#F06421] uppercase mb-3"
           >
-            {t("Simple Process", "ସরᳰ ᱯ᳭ᱤᱦᳱᱣᱡ")}
+            {t("Simple Process", "ସରଳ ପ୍ରକ୍ରିୟା")}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 16 }}

@@ -158,7 +158,7 @@ export default function Testimonials() {
           </div>
           <div className="w-px h-10 bg-gray-100 hidden sm:block" />
           <div className="text-center sm:text-left">
-            <p className="font-bold text-[#003366] text-sm">{t("Average Rating", "ହାରାହারি রেটিং")}</p>
+            <p className="font-bold text-[#003366] text-sm">{t("Average Rating", "ହାରାହାରି ରେତିଙଂ")}</p>
             <p className="text-gray-400 text-xs mt-0.5">{t("Based on 5000+ customers served", "5000+ ଗ୍ରାହୀ ଅଭିଜ୍ଞତା")}</p>
           </div>
         </motion.div>

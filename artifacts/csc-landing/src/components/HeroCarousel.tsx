@@ -21,7 +21,7 @@ const slides = [
     poster: cscServicesPoster,
     posterLabel: "100+ e-Services",
     posterAccent: "#F06421",
-    stats: [{ v: "10+", l: "Years" }, { v: "100+", l: "Services" }, { v: "5000+", l: "Customers" }],
+    stats: [{ v: "10+", l: "Years", lOd: "ବଅରଶ" }, { v: "100+", l: "Services", lOd: "ସେବା" }, { v: "5000+", l: "Customers", lOd: "ଗରାହି" }],
     orb1: "#F06421",
     orb2: "#0066cc",
   },
@@ -37,7 +37,7 @@ const slides = [
     poster: aadhaarPoster,
     posterLabel: "UCL Aadhaar Services",
     posterAccent: "#ff8844",
-    stats: [{ v: "Same Day", l: "Processing" }, { v: "WhatsApp", l: "Updates" }, { v: "Zero Queue", l: "Guarantee" }],
+    stats: [{ v: "Same Day", l: "Processing", lOd: "କାରଯ୍ଯ" }, { v: "WhatsApp", l: "Updates", lOd: "ଅଦ୍ଯଅତନ" }, { v: "Zero Queue", l: "Guarantee", lOd: "ନିଶ୍ଚିତ" }],
     orb1: "#ff8844",
     orb2: "#ff4400",
   },
@@ -53,7 +53,7 @@ const slides = [
     poster: pmWelfarePoster,
     posterLabel: "PM Welfare Schemes",
     posterAccent: "#22c55e",
-    stats: [{ v: "100%", l: "Authorized" }, { v: "SSL", l: "Secured" }, { v: "Private", l: "Data" }],
+    stats: [{ v: "100%", l: "Authorized", lOd: "ଅନୁମୋଦିତ" }, { v: "SSL", l: "Secured", lOd: "ସୁରାକ୍ଶିତ" }, { v: "Private", l: "Data", lOd: "ତଅଥ୍ଯ" }],
     orb1: "#22c55e",
     orb2: "#16a34a",
   },
@@ -175,7 +175,7 @@ export default function HeroCarousel({ onBrowse }: HeroCarouselProps) {
             {slide.stats.map((s, i) => (
               <div key={i}>
                 <div className="text-2xl font-black text-white leading-none" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{s.v}</div>
-                <div className="text-[10px] text-white/50 font-semibold mt-0.5 uppercase tracking-widest">{s.l}</div>
+                <div className="text-[10px] text-white/50 font-semibold mt-0.5 uppercase tracking-widest">{t(s.l, s.lOd || s.l)}</div>
               </div>
             ))}
           </motion.div>
