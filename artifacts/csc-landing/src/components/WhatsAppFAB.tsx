@@ -13,7 +13,7 @@ export default function WhatsAppFAB() {
       transition={{ delay: 1.5, type: "spring", stiffness: 220, damping: 20 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.93 }}
-      className="fixed bottom-6 left-4 z-30 w-12 h-12 flex items-center justify-center bg-[#25D366] rounded-full shadow-lg shadow-black/20"
+      className="fixed bottom-6 right-4 z-30 w-12 h-12 flex items-center justify-center bg-[#25D366] rounded-full shadow-lg shadow-black/20"
       title="Chat on WhatsApp"
     >
       <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20 pointer-events-none" />
