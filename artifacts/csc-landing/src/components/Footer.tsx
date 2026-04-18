@@ -181,12 +181,25 @@ export default function Footer() {
           </div>
 
           {/* Bottom bar */}
-          <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-xs text-white/35">
-              © 2025 Bapi Bhai CSC, Balasore. {t("All rights reserved.", "ସର୍ବস্বত্ব সংরক্ষিত।")}
-            </p>
-            <p className="text-xs text-white/35 flex items-center gap-1.5">
-              {t("Made with", "ତ‌ୈ‌ୟ‌ାର")} <Heart size={11} className="text-[#F06421]" /> {t("for Balasore, Odisha", "ବାଲେଶ୍ୱର ପ‌ାଇଁ")}
+          <div className="border-t border-white/10 pt-6 flex flex-col items-center gap-3">
+            <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3">
+              <p className="text-xs text-white/35">
+                © 2025 Bapi Bhai CSC, Balasore. {t("All rights reserved.", "ସର୍ବস্বত্ব সংরক্ষিত।")}
+              </p>
+              <p className="text-xs text-white/35 flex items-center gap-1.5">
+                {t("Made with", "ତ‌ୈ‌ୟ‌ାର")} <Heart size={11} className="text-[#F06421]" /> {t("for Balasore, Odisha", "ବାଲେଶ୍ୱର ପ‌ାଇଁ")}
+              </p>
+            </div>
+            <p className="text-xs text-white/25 text-center">
+              Designed and Developed by{" "}
+              <a
+                href="https://vextor.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/45 hover:text-white transition-colors underline underline-offset-2"
+              >
+                Vextor Technologies Pvt Ltd
+              </a>
             </p>
           </div>
         </div>
