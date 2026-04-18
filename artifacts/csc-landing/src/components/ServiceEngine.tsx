@@ -57,6 +57,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
   const [basket, setBasket] = useState<BasketItem[]>([]);
   const [basketOpen, setBasketOpen] = useState(false);
   const [pendingService, setPendingService] = useState<Service | null>(null);
+  const [checklist, setChecklist] = useState<{ [key: string]: boolean }>({});
 
   const fuse = useMemo(
     () =>
@@ -95,7 +96,13 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
       setBasket((prev) => [...prev, { service: pendingService, ticketId: generateTicketId() }]);
     }
     setPendingService(null);
+    setChecklist({});
     setBasketOpen(true);
+  }
+
+  function closePendingModal() {
+    setPendingService(null);
+    setChecklist({});
   }
 
   function removeFromBasket(id: string) {
@@ -389,7 +396,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setPendingService(null)}
+                onClick={closePendingModal}
                 className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
               />
               <motion.div
@@ -419,7 +426,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                       </div>
                     </div>
                     <button
-                      onClick={() => setPendingService(null)}
+                      onClick={closePendingModal}
                       className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors flex-shrink-0"
                     >
                       <X size={16} />
@@ -436,34 +443,38 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                     </div>
 
                     {pendingDocs.length > 0 ? (
-                      <ul className="space-y-2">
-                        {pendingDocs.map((doc, i) => (
-                          <li key={i} className="flex items-start gap-2.5">
-                            <span className="w-5 h-5 rounded-full bg-[#EEF4FF] text-[#003366] flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">
-                              {i + 1}
-                            </span>
-                            <span className="text-sm text-gray-700 leading-snug">{doc}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="space-y-2.5">
+                        {pendingDocs.map((doc, i) => {
+                          const key = `${pendingService!.id}-${i}`;
+                          return (
+                            <label key={i} className="flex items-center gap-2.5 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={!!checklist[key]}
+                                onChange={(e) =>
+                                  setChecklist((prev) => ({ ...prev, [key]: e.target.checked }))
+                                }
+                                className="w-4 h-4 accent-[#003366] flex-shrink-0 cursor-pointer"
+                              />
+                              <span className={`text-sm leading-snug transition-colors ${checklist[key] ? "text-gray-400 line-through" : "text-gray-700"}`}>
+                                {doc}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
                     ) : (
                       <p className="text-sm text-gray-400 italic">
                         {t("No specific documents required.", "କୌଣସି ଦলিল ଆବଶ୍ୟକ ନାହିଁ।")}
                       </p>
                     )}
 
-                    <p className="mt-4 text-[11px] text-gray-400 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2 leading-relaxed">
-                      {t(
-                        "Please keep these documents ready before visiting the center.",
-                        "ଦୟାକରି ଏହି ଦলিলগୁଡ଼ିକ ଆଗରୁ ପ୍ରସ୍ତୁତ ରଖନ୍ତୁ।"
-                      )}
-                    </p>
                   </div>
 
                   {/* Action buttons */}
                   <div className="px-5 pb-5 flex gap-2.5">
                     <button
-                      onClick={() => setPendingService(null)}
+                      onClick={closePendingModal}
                       className="flex-1 py-3 rounded-2xl border border-gray-200 text-gray-500 text-sm font-bold hover:bg-gray-50 transition-colors"
                     >
                       {t("Cancel", "ବাতিল")}
