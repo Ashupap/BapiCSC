@@ -16,7 +16,7 @@ export default function WhatsAppFAB() {
       transition={{ delay: 1.5, type: "spring", stiffness: 220, damping: 20 }}
       whileHover={{ scale: 1.07 }}
       whileTap={{ scale: 0.95 }}
-      className="fixed bottom-6 right-4 z-50 flex items-center gap-2.5 bg-[#25D366] text-white rounded-full shadow-xl px-5 py-3.5 font-bold text-sm"
+      className="fixed bottom-6 left-4 z-30 flex items-center gap-2.5 bg-[#25D366] text-white rounded-full shadow-xl px-5 py-3.5 font-bold text-sm"
       title="Chat on WhatsApp"
     >
       {/* Pulse ring */}
