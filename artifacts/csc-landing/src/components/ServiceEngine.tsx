@@ -1,9 +1,9 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Fuse from "fuse.js";
 import {
   Plus, Minus, ShoppingCart, X, CheckCircle2, FileText,
-  MessageCircle, Upload, ChevronLeft, ChevronRight
+  MessageCircle, ChevronLeft, ChevronRight, ClipboardList
 } from "lucide-react";
 import { services, categories, Service } from "@/data/services";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -23,6 +23,11 @@ const CATEGORY_META: Record<string, { emoji: string; color: string; bg: string }
   Business:      { emoji: "💼", color: "#1e40af", bg: "#EFF6FF" },
   "Digital Payments": { emoji: "💳", color: "#7c3aed", bg: "#F5F3FF" },
   Insurance:     { emoji: "🛡️", color: "#0f766e", bg: "#F0FDFA" },
+  Travel:        { emoji: "🚂", color: "#dc2626", bg: "#FEF2F2" },
+  Healthcare:    { emoji: "🏥", color: "#0f766e", bg: "#F0FDFA" },
+  "Land Records":{ emoji: "🗂️", color: "#92400e", bg: "#FEF3C7" },
+  "Digital Services": { emoji: "💻", color: "#6d28d9", bg: "#EDE9FE" },
+  Telecom:       { emoji: "📱", color: "#0369a1", bg: "#E0F2FE" },
   Other:         { emoji: "🔧", color: "#6b7280", bg: "#F9FAFB" },
 };
 
@@ -41,13 +46,6 @@ interface BasketItem {
   ticketId: string;
 }
 
-interface UploadState {
-  [serviceId: string]: {
-    status: "idle" | "uploading" | "done";
-    progress: number;
-  };
-}
-
 interface ServiceEngineProps {
   searchQuery: string;
 }
@@ -58,9 +56,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [basket, setBasket] = useState<BasketItem[]>([]);
   const [basketOpen, setBasketOpen] = useState(false);
-  const [uploadStates, setUploadStates] = useState<UploadState>({});
-  const [checklist, setChecklist] = useState<{ [key: string]: boolean }>({});
-  const fileRefs = useRef<{ [k: string]: HTMLInputElement | null }>({});
+  const [pendingService, setPendingService] = useState<Service | null>(null);
 
   const fuse = useMemo(
     () =>
@@ -93,39 +89,17 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
     setCurrentPage(Math.max(1, Math.min(p, totalPages)));
   }
 
-  function addToBasket(svc: Service) {
-    if (!basket.find((b) => b.service.id === svc.id)) {
-      setBasket((prev) => [...prev, { service: svc, ticketId: generateTicketId() }]);
-      setBasketOpen(true);
+  function confirmAddToBasket() {
+    if (!pendingService) return;
+    if (!basket.find((b) => b.service.id === pendingService.id)) {
+      setBasket((prev) => [...prev, { service: pendingService, ticketId: generateTicketId() }]);
     }
+    setPendingService(null);
+    setBasketOpen(true);
   }
 
   function removeFromBasket(id: string) {
     setBasket((prev) => prev.filter((b) => b.service.id !== id));
-  }
-
-  function simulateUpload(serviceId: string) {
-    setUploadStates((prev) => ({
-      ...prev,
-      [serviceId]: { status: "uploading", progress: 0 },
-    }));
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 20 + 10;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        setUploadStates((prev) => ({
-          ...prev,
-          [serviceId]: { status: "done", progress: 100 },
-        }));
-      } else {
-        setUploadStates((prev) => ({
-          ...prev,
-          [serviceId]: { status: "uploading", progress },
-        }));
-      }
-    }, 300);
   }
 
   function getWhatsAppLink(item: BasketItem) {
@@ -148,6 +122,11 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
   }
 
   const allCats = ["All", ...categories];
+
+  const pendingDocs = pendingService
+    ? (lang === "od" ? pendingService.required_docs_odia : pendingService.required_docs)
+    : [];
+  const pendingMeta = pendingService ? getCategoryMeta(pendingService.category) : null;
 
   return (
     <section id="services" className="py-16 bg-[#F8FAFC]">
@@ -219,7 +198,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
             <ShoppingCart size={18} />
             <span className="font-extrabold text-sm">{basket.length}</span>
             <span className="hidden sm:inline text-sm font-semibold">
-              {t("View Basket", "ଝୁଡ଼ି ଦেখনੁ")}
+              {t("View Basket", "ଝୁଡ଼ି ଦেখनੁ")}
             </span>
           </motion.button>
         )}
@@ -234,13 +213,12 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                 className="col-span-full text-center py-20 text-gray-400"
               >
                 <FileText size={44} className="mx-auto mb-3 text-gray-200" />
-                <p className="font-semibold text-gray-500">{t("No services found.", "କୋणসি ସेবা ମিলিলা ନাহিঁ।")}</p>
-                <p className="text-sm text-gray-400 mt-1">{t("Try a different search or category.", "ଅলগা ଖোজ ଚেষ্টা করনੁ।")}</p>
+                <p className="font-semibold text-gray-500">{t("No services found.", "କোणসি ସেবা ମিলিলা ନাহিঁ।")}</p>
+                <p className="text-sm text-gray-400 mt-1">{t("Try a different search or category.", "ଅलगা ଖୋଜ ଚেষ্টা করনੁ।")}</p>
               </motion.div>
             ) : (
               visible.map((svc, i) => {
                 const inBasket = basket.some((b) => b.service.id === svc.id);
-                const upload = uploadStates[svc.id];
                 const meta = getCategoryMeta(svc.category);
                 return (
                   <motion.div
@@ -256,7 +234,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                         : "border-gray-100 hover:border-gray-200 hover:shadow-lg hover:shadow-gray-100"
                     }`}
                   >
-                    {/* Top: emoji + category */}
+                    {/* Top: emoji + added indicator */}
                     <div className="flex items-center justify-between mb-3">
                       <div
                         className="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
@@ -280,83 +258,18 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                     </span>
 
                     {/* Name */}
-                    <h3 className="font-bold text-[#003366] text-sm leading-snug flex-1">
+                    <h3 className="font-bold text-[#003366] text-sm leading-snug flex-1 mb-3">
                       {lang === "od" ? svc.nameOdia : svc.name}
                     </h3>
 
-
-                    {/* Document Checklist (shows when in basket) */}
-                    {inBasket && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        className="mt-1 mb-3 bg-[#EEF4FF] rounded-xl p-3 border border-[#003366]/10"
-                      >
-                        <p className="text-[10px] font-bold text-[#003366] mb-2 uppercase tracking-wide">
-                          {t("Required Documents:", "ଆବଶ୍ୟକ ଦлिল:")}
-                        </p>
-                        <div className="space-y-1.5">
-                          {(lang === "od" ? svc.required_docs_odia : svc.required_docs).map((doc, di) => {
-                            const key = `${svc.id}-${di}`;
-                            return (
-                              <label key={di} className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={!!checklist[key]}
-                                  onChange={(e) =>
-                                    setChecklist((prev) => ({
-                                      ...prev,
-                                      [key]: e.target.checked,
-                                    }))
-                                  }
-                                  className="w-3.5 h-3.5 accent-[#003366] flex-shrink-0"
-                                />
-                                <span className={`text-xs leading-tight ${checklist[key] ? "text-gray-400 line-through" : "text-gray-700"}`}>{doc}</span>
-                              </label>
-                            );
-                          })}
-                        </div>
-
-                        {/* Upload Zone */}
-                        <div className="mt-3">
-                          {!upload || upload.status === "idle" ? (
-                            <button
-                              onClick={() => simulateUpload(svc.id)}
-                              className="w-full border-2 border-dashed border-[#F06421]/40 rounded-xl py-2.5 text-xs text-[#F06421] font-semibold hover:bg-orange-50 transition-colors flex items-center justify-center gap-1.5"
-                            >
-                              <Upload size={13} />
-                              {t("Upload Documents", "ଦलিল ଅपलোड")}
-                            </button>
-                          ) : upload.status === "uploading" ? (
-                            <div>
-                              <div className="flex justify-between text-[10px] text-gray-500 mb-1.5 font-medium">
-                                <span>{t("Uploading…", "ଅपलোड ହेउছি...")}</span>
-                                <span>{Math.round(upload.progress)}%</span>
-                              </div>
-                              <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                <motion.div
-                                  className="h-full rounded-full"
-                                  style={{ background: "linear-gradient(90deg, #F06421, #e05010)" }}
-                                  animate={{ width: `${upload.progress}%` }}
-                                  transition={{ ease: "linear" }}
-                                />
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-2 text-xs text-green-700 font-semibold bg-green-50 border border-green-100 rounded-xl px-3 py-2">
-                              <CheckCircle2 size={13} />
-                              {t("Uploaded!", "ଅपलোড ସফਲ!")}
-                            </div>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
+                    {/* Price */}
+                    <p className="text-xs text-[#F06421] font-semibold mb-3">{svc.base_price_range}</p>
 
                     {/* Actions */}
                     <div className="mt-auto flex gap-1.5">
                       <button
                         onClick={() =>
-                          inBasket ? removeFromBasket(svc.id) : addToBasket(svc)
+                          inBasket ? removeFromBasket(svc.id) : setPendingService(svc)
                         }
                         className={`flex-1 flex items-center justify-center gap-1 py-2 rounded-xl text-[11px] font-bold transition-all ${
                           inBasket
@@ -398,7 +311,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
             <p className="text-xs text-gray-400 font-medium">
               {t(
                 `Page ${safePage} of ${totalPages} · ${filtered.length} services`,
-                `ପৃষ্ঠা ${safePage} / ${totalPages} · ${filtered.length} সেবা`
+                `ପୃষ୍ଠା ${safePage} / ${totalPages} · ${filtered.length} সেবা`
               )}
             </p>
             <div className="flex items-center gap-1">
@@ -448,7 +361,108 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
           </div>
         )}
 
-        {/* Basket Drawer */}
+        {/* ── Required Docs Confirmation Modal ── */}
+        <AnimatePresence>
+          {pendingService && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setPendingService(null)}
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.92, y: 24 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.92, y: 24 }}
+                transition={{ type: "spring", damping: 24, stiffness: 260 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+              >
+                <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm pointer-events-auto overflow-hidden">
+                  {/* Modal header */}
+                  <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-gray-100">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                        style={{ backgroundColor: pendingMeta?.bg }}
+                      >
+                        {pendingMeta?.emoji}
+                      </div>
+                      <div>
+                        <p className="font-extrabold text-[#003366] text-sm leading-tight">
+                          {lang === "od" ? pendingService.nameOdia : pendingService.name}
+                        </p>
+                        <p className="text-[11px] text-gray-400 mt-0.5">
+                          {lang === "od" ? pendingService.categoryOdia : pendingService.category}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setPendingService(null)}
+                      className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors flex-shrink-0"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+
+                  {/* Docs list */}
+                  <div className="px-5 py-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <ClipboardList size={15} className="text-[#003366]" />
+                      <p className="text-xs font-extrabold text-[#003366] uppercase tracking-wide">
+                        {t("Required Documents", "ଆବଶ୍ୟକ ଦଲিল")}
+                      </p>
+                    </div>
+
+                    {pendingDocs.length > 0 ? (
+                      <ul className="space-y-2">
+                        {pendingDocs.map((doc, i) => (
+                          <li key={i} className="flex items-start gap-2.5">
+                            <span className="w-5 h-5 rounded-full bg-[#EEF4FF] text-[#003366] flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">
+                              {i + 1}
+                            </span>
+                            <span className="text-sm text-gray-700 leading-snug">{doc}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-gray-400 italic">
+                        {t("No specific documents required.", "କୌଣସି ଦলিল ଆବଶ୍ୟକ ନାହିଁ।")}
+                      </p>
+                    )}
+
+                    <p className="mt-4 text-[11px] text-gray-400 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2 leading-relaxed">
+                      {t(
+                        "Please keep these documents ready before visiting the center.",
+                        "ଦୟାକରି ଏହି ଦলিলগୁଡ଼ିକ ଆଗରୁ ପ୍ରସ୍ତୁତ ରଖନ୍ତୁ।"
+                      )}
+                    </p>
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="px-5 pb-5 flex gap-2.5">
+                    <button
+                      onClick={() => setPendingService(null)}
+                      className="flex-1 py-3 rounded-2xl border border-gray-200 text-gray-500 text-sm font-bold hover:bg-gray-50 transition-colors"
+                    >
+                      {t("Cancel", "ବাতিল")}
+                    </button>
+                    <button
+                      onClick={confirmAddToBasket}
+                      className="flex-1 py-3 rounded-2xl bg-[#003366] text-white text-sm font-extrabold hover:bg-[#004080] transition-colors shadow-md shadow-blue-900/20 flex items-center justify-center gap-2"
+                    >
+                      <ShoppingCart size={15} />
+                      {t("Add to Basket", "ଝুড়িতে ଯোগ করনু")}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* ── Basket Drawer ── */}
         <AnimatePresence>
           {basketOpen && basket.length > 0 && (
             <>
@@ -471,7 +485,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                   <div className="flex items-center gap-2.5">
                     <ShoppingCart size={20} />
                     <h3 className="font-extrabold text-lg">
-                      {t("Your Basket", "ଆপণঙ୍କ ଝুड़ি")}
+                      {t("Your Basket", "ଆପଣଙ୍କ ଝୁଡ଼ি")}
                     </h3>
                     <span className="bg-white/20 text-white text-xs font-bold px-2.5 py-0.5 rounded-full">{basket.length}</span>
                   </div>
@@ -487,6 +501,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {basket.map((item) => {
                     const meta = getCategoryMeta(item.service.category);
+                    const docs = lang === "od" ? item.service.required_docs_odia : item.service.required_docs;
                     return (
                       <motion.div
                         key={item.service.id}
@@ -516,16 +531,20 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                           </button>
                         </div>
 
-                        <div className="mt-2.5 flex flex-wrap gap-1">
-                          {(lang === "od"
-                            ? item.service.required_docs_odia
-                            : item.service.required_docs
-                          ).map((doc, i) => (
-                            <span key={i} className="text-[10px] bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-full font-medium">
-                              {doc}
-                            </span>
-                          ))}
-                        </div>
+                        {docs.length > 0 && (
+                          <div className="mt-3">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1.5">
+                              {t("Required Docs", "ଆବଶ୍ୟକ ଦলিল")}
+                            </p>
+                            <div className="flex flex-wrap gap-1">
+                              {docs.map((doc, i) => (
+                                <span key={i} className="text-[10px] bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-full font-medium">
+                                  {doc}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
 
                         <a
                           href={getWhatsAppLink(item)}
@@ -534,7 +553,7 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                           className="mt-3 flex items-center justify-center gap-1.5 w-full py-2.5 bg-[#25D366] text-white rounded-xl text-xs font-bold hover:bg-[#1da851] transition-colors"
                         >
                           <MessageCircle size={13} />
-                          {t("Get Quote", "ଉद्धृत পান")}
+                          {t("Get Quote", "ଉद्धृत ପান")}
                         </a>
                       </motion.div>
                     );
@@ -552,11 +571,11 @@ export default function ServiceEngine({ searchQuery }: ServiceEngineProps) {
                     <MessageCircle size={20} />
                     {t(
                       `Send All ${basket.length} Services to WhatsApp`,
-                      `${basket.length}ਟੀ ਸੇਵਾ WhatsApp ਰੇ ਪਠਾਨੁ`
+                      `${basket.length}ଟି ସেবা WhatsApp ରে ପଠାନ`
                     )}
                   </a>
                   <p className="text-center text-xs text-gray-400 mt-2 font-medium">
-                    {t("We'll reply within 30 minutes", "ଆমे ৩০ মিনিটে উত্তর দেবু")}
+                    {t("We'll reply within 30 minutes", "ଆমে ৩০ মিনিটে উত্তর দেবু")}
                   </p>
                 </div>
               </motion.div>
